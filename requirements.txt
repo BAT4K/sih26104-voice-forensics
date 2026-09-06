@@ -1,0 +1,38 @@
+# Pinned. v0.3 was entirely unpinned, which is why `eval_strategy=` could fail
+# with a confusing error on transformers < 4.41.
+# Python 3.10 or 3.11. Do NOT use 3.9 or earlier.
+
+torch>=2.2,<3.0
+torchaudio>=2.2,<3.0
+transformers>=4.44,<5.0
+numpy>=1.26,<3.0
+scipy>=1.11
+soundfile>=0.12
+librosa>=0.10
+
+# Cross-session speaker verification. Pretrained on VoxCeleb - NOT fine-tuned,
+# so this adds zero training data and zero GPU hours.
+speechbrain>=1.0
+
+# API
+fastapi>=0.110,<1.0
+uvicorn[standard]>=0.27
+python-multipart>=0.0.9
+pydantic>=2.6,<3.0
+
+# Dashboard
+streamlit>=1.32
+matplotlib>=3.8
+requests>=2.31
+
+# Training and data
+datasets>=2.18
+accelerate>=0.29
+
+# Tests
+pytest>=8.0
+
+# Optional. Tier 0 watermark detection is skipped cleanly when absent.
+# audioseal>=0.1.4
+grpcio
+grpcio-tools

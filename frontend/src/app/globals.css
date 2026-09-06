@@ -1,0 +1,258 @@
+@import "tailwindcss";
+
+/* ═══ LIGHT DIRECTION: TOP LEFT ═══════════════════════════════════════════
+   Written down first, per the technique. Every face colour below is derived
+   from it, never chosen:
+     top face    lighter than the body
+     left face   slightly lighter
+     right face  darker
+     bottom      darkest
+     cast shadow falls down and to the right
+   Consistency is what produces the solidity, not detail. ══════════════════ */
+
+/* ── Cipher ───────────────────────────────────────────────────────────────
+   Two tone ladders on the same structure, switched with data-tone on <html>:
+     ash   cool greys on near-black — colder, more instrument
+     bone  warm off-whites on true black — marble, closer to the reference
+   Only the ink and ground steps differ. Nothing else in the design changes. */
+
+@theme {
+  --font-grotesque: var(--font-grotesque), "Helvetica Neue", Arial, sans-serif;
+  --font-display:   var(--font-serif), "Times New Roman", serif;
+  --font-mono:    var(--font-plex), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-sans:    -apple-system, "SF Pro Text", system-ui, sans-serif;
+}
+
+/* VAULT — true black, high contrast, heavy texture.
+   Stark and photographic. Nothing is lifted; the whites go all the way up. */
+:root, [data-tone="vault"] {
+  --ground:  #000000;
+  --ink-1:   #ffffff;
+  --ink-2:   #c8ccd4;
+  --ink-3:   #868b95;
+  --ink-4:   #4e535c;
+  --ink-5:   #26292f;
+  --hair:        rgba(255,255,255,0.085);
+  --hair-strong: rgba(255,255,255,0.18);
+  --lift:        rgba(255,255,255,0.032);
+  --top-light:   rgba(255,255,255,0.14);
+  --state-clone:   #c8443f;
+  --state-genuine: #6b7a71;
+  --state-unclear: #5a5d66;
+  --tex-smoke:  0.62;
+  --tex-strata: 0.40;
+  --tex-fine:   0.16;
+  --tex-grain:  0.030;
+  --tex-veil:   0;
+}
+
+/* FOG — lifted charcoal, low contrast, almost no texture.
+   Matte and quiet, like a film grade with raised blacks. Nothing reaches
+   white; the top ink stops well short, which is what makes it feel soft. */
+[data-tone="fog"] {
+  --ground:  #171a20;
+  --ink-1:   #ddd4c6;
+  --ink-2:   #a49a8b;
+  --ink-3:   #776f63;
+  --ink-4:   #625b51;
+  --ink-5:   #474038;
+  --hair:        rgba(232,224,210,0.075);
+  --hair-strong: rgba(232,224,210,0.16);
+  --lift:        rgba(232,224,210,0.040);
+  --top-light:   rgba(232,224,210,0.10);
+  --state-clone:   #b06a5c;
+  --state-genuine: #7d8274;
+  --state-unclear: #6a6259;
+  --tex-smoke:  0.14;
+  --tex-strata: 0.09;
+  --tex-fine:   0.03;
+  --tex-grain:  0.045;
+  --tex-veil:   0.55;   /* a flat scrim that lifts the blacks */
+}
+
+:root { color-scheme: dark; }
+/* Only <html> carries the ground. If <body> also paints one, it forms a
+   background box that a z-index:-10 fixed layer renders BEHIND — which hides
+   the smoke completely. */
+html { background: var(--ground); }
+body { background: transparent; }
+
+body {
+  color: var(--ink-2);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.65;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* type roles */
+/* the headline voice: heavy caps, tight, optically negative tracking */
+.caps {
+  font-family: var(--font-grotesque);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.026em;
+  line-height: 0.90;
+}
+/* accent words set inside a caps headline */
+.accent {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.display { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.012em; }
+.mono      { font-family: var(--font-mono); }
+.tnum      { font-variant-numeric: tabular-nums; }
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+/* A hairline that fades at both ends: light catching an edge, not a drawn box.
+   This replaces borders everywhere on the page. */
+.rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hair) 10%,
+                              var(--hair) 90%, transparent);
+}
+
+/* The only surface. Depth comes from a lit top edge, never an outline. */
+.plate {
+  background:
+    linear-gradient(180deg, var(--lift), rgba(255,255,255,0.010)),
+    linear-gradient(180deg, rgba(0,0,0,0.62), rgba(0,0,0,0.52));
+  border-radius: 10px;
+  position: relative;
+  /* thickness first, cast shadow last — the panel rests on the page rather
+     than floating above a grey smudge */
+  box-shadow:
+    0 1px 0 rgba(0,0,0,0.50),
+    0 2px 0 rgba(0,0,0,0.62),
+    0 18px 38px -16px rgba(0,0,0,0.85);
+}
+.plate::before {
+  content: "";
+  position: absolute; inset: 0 0 auto 0; height: 1px;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(90deg, transparent, var(--top-light) 28%,
+                              var(--top-light) 72%, transparent);
+}
+
+/* native control metrics: 28px, not 38px */
+.control {
+  height: 28px; border-radius: 6px; width: 100%;
+  background: rgba(255,255,255,0.045);
+  color: var(--ink-2); font-size: 12.5px; padding: 0 10px;
+  border: none; outline: none; appearance: none;
+  transition: background 140ms ease;
+}
+.control:hover { background: rgba(255,255,255,0.07); }
+.control:focus-visible {
+  box-shadow: 0 0 0 1px var(--hair-strong), 0 0 0 4px rgba(255,255,255,0.05);
+}
+.control::placeholder { color: var(--ink-5); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important; transition-duration: .01ms !important;
+  }
+}
+
+/* A soft local darkening that sits behind a text block only. Heavily feathered
+   and inset-negative so it never reads as a box — it just gives the type a
+   calmer patch of ground when a bright wisp drifts underneath. */
+.scrim { position: relative; }
+.scrim::before {
+  content: "";
+  position: absolute;
+  inset: -28px -48px;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(115% 105% at 28% 50%,
+    rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.55) 48%, rgba(0,0,0,0) 100%);
+  filter: blur(14px);
+}
+
+/* ink level utilities — used instead of Tailwind colour classes so the two
+   tone ladders swap with a single attribute on <html> */
+.t1 { color: var(--ink-1); }
+.t2 { color: var(--ink-2); }
+.t3 { color: var(--ink-3); }
+.t4 { color: var(--ink-4); }
+.t5 { color: var(--ink-5); }
+
+/* ── dimensional surfaces ──────────────────────────────────────────────────
+   Depth is built from lighting so it survives a still screenshot. Motion is
+   added last and never carries the illusion on its own. */
+
+/* face steps, derived from the light direction above */
+:root {
+  --face-top:    rgba(255,255,255,0.13);
+  --face-left:   rgba(255,255,255,0.06);
+  --face-right:  rgba(0,0,0,0.45);
+  --face-bottom: rgba(0,0,0,0.70);
+}
+
+/* Technique 3 — hard shadow stack. Zero-blur offsets are visible sides of the
+   object; the final blurred one is the actual cast shadow. Each step darker
+   than the last, or the stack reads as a border. */
+.slab {
+  box-shadow:
+    0 1px 0 rgba(0,0,0,0.55),
+    0 2px 0 rgba(0,0,0,0.68),
+    0 3px 0 rgba(0,0,0,0.78),
+    0 4px 0 rgba(0,0,0,0.86),
+    0 26px 50px -18px rgba(0,0,0,0.92);
+}
+
+/* Technique 7 — the 1px chamfer. A gradient, not a solid line: a solid line
+   reads as a border, a fading one reads as light falling off a curved edge. */
+.lit-edge { position: relative; }
+.lit-edge::before {
+  content: "";
+  position: absolute; inset: 0 0 auto 0; height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0) 0%,
+    var(--face-top) 22%,
+    rgba(255,255,255,0.05) 100%);
+  pointer-events: none;
+}
+
+/* Technique 1 — extrusion by skewed pseudo-elements. The transform-origin is
+   the part that matters: the top face pivots on its bottom-left and the right
+   face on its top-left, so the two meet at the corner instead of tearing. */
+.extrude { position: relative; }
+.extrude::before {
+  content: "";
+  position: absolute; left: 0; right: 0; top: -4px; height: 4px;
+  background: var(--face-top);
+  transform: skewX(-45deg);
+  transform-origin: bottom left;
+}
+.extrude::after {
+  content: "";
+  position: absolute; top: 0; bottom: 0; right: -4px; width: 4px;
+  background: var(--face-right);
+  transform: skewY(-45deg);
+  transform-origin: top left;
+}
+
+/* Technique 2 — for anything under ~12px tall, one inset shadow replaces faces */
+.bevel {
+  box-shadow: inset 0 1px 0 var(--face-top),
+              inset 0 -1px 0 var(--face-bottom);
+}
+
+/* Lenis requires the document to keep its natural height while it drives the
+   scroll position itself. */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }

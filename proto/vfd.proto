@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package vfd;
+
+service VoiceForensicService {
+    // Unary call for a complete audio file analysis
+    rpc AnalyzeAudio (AnalyzeRequest) returns (AnalyzeResponse) {}
+    
+    // Bidirectional streaming for real-time live call analysis
+    rpc StreamAudio (stream StreamRequest) returns (stream StreamResponse) {}
+}
+
+message AnalyzeRequest {
+    bytes audio_chunk = 1;
+    string request_id = 2;
+    string speaker_id = 3;
+}
+
+message AnalyzeResponse {
+    string request_id = 1;
+    string verdict = 2;
+    float risk_score = 3;
+    bool is_fake = 4;
+    string recommended_action = 5;
+}
+
+message StreamRequest {
+    bytes audio_chunk = 1;
+    bool reset = 2;
+}
+
+message StreamResponse {
+    string request_id = 1;
+    float risk_score = 2;
+    bool is_fake = 3;
+    string status = 4;
+}

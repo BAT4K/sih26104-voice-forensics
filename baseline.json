@@ -1,0 +1,25 @@
+{
+  "n_clips": 2095,
+  "baseline": {
+    "spectral_cutoff_ratio": [
+      0.948712,
+      0.072411
+    ],
+    "hf_energy_ratio": [
+      0.010695,
+      0.025624
+    ],
+    "f0_curvature": [
+      0.112456,
+      0.082399
+    ],
+    "pause_rate_per_min": [
+      96.893623,
+      38.243846
+    ],
+    "noise_floor_flatness": [
+      0.119189,
+      0.131844
+    ]
+  }
+}
