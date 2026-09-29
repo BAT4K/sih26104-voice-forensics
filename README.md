@@ -50,3 +50,7 @@ The system is configured to instantly fire alerts when a high-risk voice is dete
 2. Enter a webhook URL (e.g., from [webhook.site](https://webhook.site/)).
 3. Upload any high-risk deepfake audio.
 4. Watch the alert payload instantly arrive at your webhook!
+
+## Contributors
+- Hans James ([@BAT4K](https://github.com/BAT4K))
+- Krish Saxena ([@KRISH123no](https://github.com/KRISH123no))
